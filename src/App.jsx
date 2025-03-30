@@ -19,7 +19,7 @@ const App = () => {
       }
       return acc;
     }, []);
-  }, [imagesData]);
+  }, []);
 
   const toggleExpand = (title) => {
     setExpandedTitles(prev =>
@@ -30,8 +30,16 @@ const App = () => {
   };
 
   const handleImageClick = (imageUrl) => {
-    const newWindow = window.open('', '_blank', 'noopener,noreferrer');
-    newWindow.location.href = imageUrl;
+    // Create a temporary anchor element
+    const a = document.createElement('a');
+    a.href = imageUrl;
+    a.target = '_blank';
+    a.rel = 'noopener noreferrer';
+
+    // Programmatically click the anchor
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
   };
 
   return (
@@ -50,8 +58,8 @@ const App = () => {
 
         <div className="space-y-8">
           {processedData.map((doc) => (
-            <div 
-              key={doc.title} 
+            <div
+              key={doc.title}
               className="bg-white rounded-2xl shadow-lg overflow-hidden transition-all duration-300 hover:shadow-xl"
             >
               <div
@@ -71,9 +79,8 @@ const App = () => {
                     {doc.pages.length} {doc.pages.length === 1 ? 'Item' : 'Items'}
                   </span>
                   <svg
-                    className={`w-6 h-6 text-gray-500 transform transition-transform duration-300 ${
-                      expandedTitles.includes(doc.title) ? 'rotate-180' : ''
-                    }`}
+                    className={`w-6 h-6 text-gray-500 transform transition-transform duration-300 ${expandedTitles.includes(doc.title) ? 'rotate-180' : ''
+                      }`}
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
